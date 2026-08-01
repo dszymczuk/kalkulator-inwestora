@@ -1,0 +1,23 @@
+/* Reszta stylów pochodzi z motywu MUI (src/theme.ts) i CssBaseline. */
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ukrycie strzałek w polach liczbowych — kwoty wpisuje się z klawiatury. */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
