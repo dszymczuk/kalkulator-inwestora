@@ -53,6 +53,25 @@ zawsze zgadza się z budżetem. Wyjątkiem jest wpłata domykająca roczny cel
 IKE/IKZE — idzie co do grosza, bo inaczej resztówka poniżej 100 zł nigdy by się
 nie zaksięgowała i limit pozostałby niedomknięty.
 
+### Eksport do kalendarza
+
+Zakładka „Miesiąc po miesiącu" pozwala pobrać plik `.ics` z planem wpłat
+(Kalendarz Google → Ustawienia → Importuj i eksportuj → Importuj).
+
+- Wybierasz dzień miesiąca i godzinę pierwszego wydarzenia.
+- Rok jest zawsze rokiem limitów (`CURRENT_YEAR`), a plik zawsze pokrywa pełne
+  12 miesięcy — od stycznia do grudnia, niezależnie od bieżącej daty. Dzięki temu
+  wydarzenia w kalendarzu odpowiadają dokładnie tabeli planu i limitom, na
+  których został policzony.
+- Jeśli miesiąc nie ma wybranego dnia (np. 31 lutego), wpłata trafia na ostatni
+  dzień tego miesiąca.
+- Każdy kubełek z niezerową kwotą dostaje osobne wydarzenie — jedno po drugim
+  co 5 minut, każde trwające 5 minut.
+- Czas jest zapisany jako „pływający" (bez strefy), więc wydarzenie pojawi się
+  o wybranej godzinie czasu lokalnego kalendarza.
+- UID-y są deterministyczne, więc ponowny import aktualizuje istniejące
+  wydarzenia zamiast tworzyć duplikaty.
+
 ### Precyzja
 
 Cała alokacja liczona jest na groszach (liczby całkowite), a podział

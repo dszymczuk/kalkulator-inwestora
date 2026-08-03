@@ -21,6 +21,7 @@ import type { CalculationResult, MonthPlan } from '../../domain/allocate';
 import { ASSETS, ASSET_KEYS, type AssetKey } from '../../domain/assets';
 import { MONTH_NAMES, MONTH_NAMES_SHORT } from '../../domain/constants';
 import { formatMoney, formatPercent } from '../../utils/format';
+import { CalendarExport } from './CalendarExport';
 
 type Mode = 'amount' | 'share';
 
@@ -221,6 +222,10 @@ export function MonthlyPlan({ result }: MonthlyPlanProps) {
           </Table>
         </Paper>
       )}
+
+      <Box sx={{ pt: 1 }}>
+        <CalendarExport result={result} />
+      </Box>
     </Stack>
   );
 }
