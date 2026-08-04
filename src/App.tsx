@@ -40,8 +40,8 @@ const STORAGE_KEY = 'kalkulator-inwestora:v1';
 const STEPS: Array<{ label: string; fields: Array<FieldPath<CalculatorFormValues>> }> = [
   { label: 'Budżet', fields: ['monthlyAmount', 'employmentType'] },
   { label: 'IKE / IKZE', fields: ['useIke', 'useIkze', 'ikeAnnual', 'ikzeAnnual'] },
-  { label: 'Proporcje', fields: ['weights'] },
   { label: 'Strategia', fields: ['strategy', 'neutralWrappers', 'roundTo100', 'roundingTarget'] },
+  { label: 'Proporcje', fields: ['weights'] },
   { label: 'Wyniki', fields: [] },
 ];
 
@@ -148,8 +148,8 @@ function CalculatorShell() {
 
           {activeStep === 0 ? <BudgetStep /> : null}
           {activeStep === 1 ? <AccountsStep /> : null}
-          {activeStep === 2 ? <ProportionsStep /> : null}
-          {activeStep === 3 ? <StrategyStep /> : null}
+          {activeStep === 2 ? <StrategyStep /> : null}
+          {activeStep === 3 ? <ProportionsStep /> : null}
           {activeStep === 4 ? <ResultsStep result={result} /> : null}
         </Container>
 
