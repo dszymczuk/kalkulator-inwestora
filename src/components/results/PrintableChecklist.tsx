@@ -4,7 +4,7 @@ import type { CalculationResult } from '../../domain/allocate';
 import { ASSETS } from '../../domain/assets';
 import type { Checklist } from '../../domain/checklist';
 import { darkenForPrint } from '../../utils/color';
-import { formatMoney, formatPercent } from '../../utils/format';
+import { formatMoney, formatMoneyShort } from '../../utils/format';
 
 export type PrintColorMode = 'color' | 'mono';
 
@@ -21,6 +21,10 @@ interface PrintableChecklistProps {
  */
 export function PrintableChecklist({ result, checklist, colorMode }: PrintableChecklistProps) {
   const summaryRows = result.summary.filter((row) => row.amount > 0);
+  const half = Math.ceil(summaryRows.length / 2);
+  const summaryPairs = summaryRows
+    .slice(0, half)
+    .map((row, index) => [row, summaryRows[half + index]] as const);
   const inColor = colorMode === 'color';
 
   // W trybie kolorowym kropka zostaje w oryginalnym kolorze (mały znacznik),
@@ -31,19 +35,19 @@ export function PrintableChecklist({ result, checklist, colorMode }: PrintableCh
   return createPortal(
     <div className={`print-sheet${inColor ? '' : ' print-sheet--mono'}`}>
       <header className="ps-head">
-        <h1 className="ps-title">Plan wpłat {checklist.year}</h1>
-        <p className="ps-subtitle">
-          Lista do odhaczania — wpłaty {checklist.dayOfMonth}. dnia każdego miesiąca.
-        </p>
+        <div>
+          <h1 className="ps-title">Plan wpłat {checklist.year}</h1>
+          <p className="ps-subtitle">Wpłaty {checklist.dayOfMonth}. dnia każdego miesiąca</p>
+        </div>
         <div className="ps-facts">
           <span>
-            Budżet roczny: <strong>{formatMoney(result.budgetTotal)}</strong>
+            Budżet: <strong>{formatMoneyShort(result.budgetTotal)}</strong>
           </span>
           <span>
-            Miesięcznie: <strong>{formatMoney(result.budgetTotal / 12)}</strong>
+            Miesięcznie: <strong>{formatMoneyShort(result.budgetTotal / 12)}</strong>
           </span>
           <span>
-            Pozycji do odhaczenia: <strong>{checklist.itemCount}</strong>
+            Pozycji: <strong>{checklist.itemCount}</strong>
           </span>
         </div>
       </header>
@@ -72,10 +76,7 @@ export function PrintableChecklist({ result, checklist, colorMode }: PrintableCh
                   <span className="ps-dot" style={dot(item.color)} />
                   {item.label}
                 </span>
-                <span className="ps-row__amount">
-                  {formatMoney(item.amount)}
-                  <span className="ps-row__share">{formatPercent(item.share)}</span>
-                </span>
+                <span className="ps-row__amount">{formatMoney(item.amount)}</span>
               </div>
             ))}
 
@@ -100,33 +101,38 @@ export function PrintableChecklist({ result, checklist, colorMode }: PrintableCh
 
       <section className="ps-summary">
         <h2 className="ps-summary__title">Podsumowanie roczne</h2>
+        {/* Dwie kolumny obok siebie — podsumowanie zajmuje o połowę mniej wysokości. */}
         <table className="ps-table">
-          <thead>
-            <tr>
-              <th>Kubełek</th>
-              <th>Kwota roczna</th>
-              <th>Udział</th>
-            </tr>
-          </thead>
           <tbody>
-            {summaryRows.map((row) => (
-              <tr key={row.key}>
+            {summaryPairs.map(([left, right]) => (
+              <tr key={left.key}>
                 <td>
-                  <span className="ps-row__label" style={label(ASSETS[row.key].color)}>
-                    <span className="ps-dot" style={dot(ASSETS[row.key].color)} />
-                    {ASSETS[row.key].label}
+                  <span className="ps-row__label" style={label(ASSETS[left.key].color)}>
+                    <span className="ps-dot" style={dot(ASSETS[left.key].color)} />
+                    {ASSETS[left.key].label}
                   </span>
                 </td>
-                <td>{formatMoney(row.amount)}</td>
-                <td>{formatPercent(row.actualShare)}</td>
+                <td>{formatMoney(left.amount)}</td>
+                <td className="ps-table__gap" />
+                <td>
+                  {right ? (
+                    <span className="ps-row__label" style={label(ASSETS[right.key].color)}>
+                      <span className="ps-dot" style={dot(ASSETS[right.key].color)} />
+                      {ASSETS[right.key].label}
+                    </span>
+                  ) : null}
+                </td>
+                <td>{right ? formatMoney(right.amount) : null}</td>
               </tr>
             ))}
           </tbody>
           <tfoot>
             <tr>
-              <td>Razem</td>
+              <td>Razem w roku</td>
               <td>{formatMoney(result.investedTotal)}</td>
-              <td>{formatPercent(result.investedTotal > 0 ? 100 : 0)}</td>
+              <td className="ps-table__gap" />
+              <td>Miesięcznie</td>
+              <td>{formatMoney(result.budgetTotal / 12)}</td>
             </tr>
           </tfoot>
         </table>

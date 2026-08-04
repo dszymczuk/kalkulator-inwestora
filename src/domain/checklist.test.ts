@@ -74,11 +74,12 @@ describe('buildChecklist', () => {
     expect(checklist.weekendMonths).not.toContain('Styczeń');
   });
 
-  it('udziały pozycji w miesiącu sumują się do 100%', () => {
-    for (const month of checklist.months) {
-      const sum = month.items.reduce((acc, item) => acc + item.share, 0);
-      expect(sum).toBeCloseTo(100, 6);
-    }
+  it('pomija kubełki bez wpłaty w danym miesiącu', () => {
+    const priority = calculate({ ...input, strategy: 'priority' });
+    const styczen = buildChecklist(priority, { year: 2026, dayOfMonth: 5 }).months[0];
+
+    // W trybie priorytetowym styczeń to wyłącznie wpłata na IKZE.
+    expect(styczen.items.map((item) => item.key)).toEqual(['ikze']);
   });
 });
 

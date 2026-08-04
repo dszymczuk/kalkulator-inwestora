@@ -82,6 +82,9 @@ odhaczenia" na cały rok — miesiąc po miesiącu, z kwadratem przy każdej wp�
   weekend.
 - Przycisk otwiera systemowe okno drukowania — tam wybiera się drukarkę albo
   „Zapisz jako PDF".
+- Całość mieści się na dwóch stronach A4: 8 miesięcy na pierwszej, pozostałe
+  cztery plus podsumowanie na drugiej. Bloki miesięcy mają `break-inside:
+  avoid`, więc nigdy nie pękają w połowie.
 - Do wyboru wersja czarno-biała albo z kolorowymi nazwami kubełków. Kolory
   palety są dobrane pod ciemne tło aplikacji, więc na potrzeby papieru
   przyciemnia je `darkenForPrint()` (`src/utils/color.ts`) do kontrastu 4,5:1

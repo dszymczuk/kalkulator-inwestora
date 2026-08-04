@@ -22,8 +22,6 @@ export interface ChecklistItem {
   label: string;
   color: string;
   amount: number;
-  /** Udział pozycji w wpłacie danego miesiąca (%). */
-  share: number;
 }
 
 export interface ChecklistMonth {
@@ -80,7 +78,6 @@ export function buildChecklist(
       label: ASSETS[key].label,
       color: ASSETS[key].color,
       amount: plan.byAsset[key],
-      share: plan.total > 0 ? (plan.byAsset[key] / plan.total) * 100 : 0,
     }));
 
     return {
