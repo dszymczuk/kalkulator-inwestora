@@ -1,5 +1,6 @@
 import BarChartIcon from '@mui/icons-material/BarChart';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import IosShareIcon from '@mui/icons-material/IosShare';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -10,6 +11,7 @@ import { useState } from 'react';
 import type { CalculationResult } from '../../domain/allocate';
 import { AnnualSummary } from '../results/AnnualSummary';
 import { ChartsView } from '../results/ChartsView';
+import { ExportView } from '../results/ExportView';
 import { MonthlyPlan } from '../results/MonthlyPlan';
 
 interface ResultsStepProps {
@@ -41,11 +43,13 @@ export function ResultsStep({ result }: ResultsStepProps) {
         <Tab icon={<CalendarMonthIcon fontSize="small" />} iconPosition="start" label="Miesiąc po miesiącu" />
         <Tab icon={<PieChartIcon fontSize="small" />} iconPosition="start" label="Podsumowanie roczne" />
         <Tab icon={<BarChartIcon fontSize="small" />} iconPosition="start" label="Wykresy" />
+        <Tab icon={<IosShareIcon fontSize="small" />} iconPosition="start" label="Eksport" />
       </Tabs>
 
       {tab === 0 ? <MonthlyPlan result={result} /> : null}
       {tab === 1 ? <AnnualSummary result={result} /> : null}
       {tab === 2 ? <ChartsView result={result} /> : null}
+      {tab === 3 ? <ExportView result={result} /> : null}
     </Box>
   );
 }

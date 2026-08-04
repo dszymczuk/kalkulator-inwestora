@@ -55,7 +55,7 @@ nie zaksięgowała i limit pozostałby niedomknięty.
 
 ### Eksport do kalendarza
 
-Zakładka „Miesiąc po miesiącu" pozwala pobrać plik `.ics` z planem wpłat
+Zakładka „Eksport" pozwala pobrać plik `.ics` z planem wpłat
 (Kalendarz Google → Ustawienia → Importuj i eksportuj → Importuj).
 
 - Wybierasz dzień miesiąca i godzinę pierwszego wydarzenia.
@@ -71,6 +71,23 @@ Zakładka „Miesiąc po miesiącu" pozwala pobrać plik `.ics` z planem wpłat
   o wybranej godzinie czasu lokalnego kalendarza.
 - UID-y są deterministyczne, więc ponowny import aktualizuje istniejące
   wydarzenia zamiast tworzyć duplikaty.
+
+### Wydruk / zapis do PDF
+
+Ta sama zakładka „Eksport" pozwala wydrukować plan jako listę „do
+odhaczenia" na cały rok — miesiąc po miesiącu, z kwadratem przy każdej wpłacie.
+
+- Wybierasz dzień wpłaty; w krótszych miesiącach data przechodzi na ostatni
+  dzień miesiąca, a lista sygnalizuje miesiące, w których wpłata wypada w
+  weekend.
+- Przycisk otwiera systemowe okno drukowania — tam wybiera się drukarkę albo
+  „Zapisz jako PDF".
+- Do wyboru wersja czarno-biała albo z kolorowymi nazwami kubełków. Kolory
+  palety są dobrane pod ciemne tło aplikacji, więc na potrzeby papieru
+  przyciemnia je `darkenForPrint()` (`src/utils/color.ts`) do kontrastu 4,5:1
+  względem bieli.
+- Arkusz wydruku (`src/print.css`) jest renderowany portalem do `<body>`, poza
+  drzewem aplikacji — dzięki temu przy drukowaniu wystarczy ukryć `#root`.
 
 ### Precyzja
 
@@ -89,6 +106,7 @@ src/
     fields/      pola formularza
   hooks/         przeliczanie planu na bieżąco
   theme.ts       ciemny motyw MUI
+  print.css      jasny arkusz do druku / PDF
 ```
 
 Stan formularza jest zapisywany w `localStorage`, więc odświeżenie strony nie

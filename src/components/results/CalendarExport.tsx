@@ -17,13 +17,12 @@ import {
   calendarFileName,
   previewCalendar,
 } from '../../domain/calendar';
-import { CURRENT_YEAR } from '../../domain/constants';
+import { CURRENT_YEAR, DEFAULT_PAYMENT_DAY } from '../../domain/constants';
 
 interface CalendarExportProps {
   result: CalculationResult;
 }
 
-const DEFAULT_DAY = 5;
 const DEFAULT_TIME = '18:00';
 
 /** Zamienia „HH:MM" na godzinę i minutę; zwraca null dla niepełnej wartości. */
@@ -37,7 +36,7 @@ function parseTime(value: string): { hour: number; minute: number } | null {
 }
 
 export function CalendarExport({ result }: CalendarExportProps) {
-  const [day, setDay] = useState(String(DEFAULT_DAY));
+  const [day, setDay] = useState(String(DEFAULT_PAYMENT_DAY));
   const [time, setTime] = useState(DEFAULT_TIME);
 
   const dayNumber = Number(day);
@@ -91,7 +90,8 @@ export function CalendarExport({ result }: CalendarExportProps) {
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
             Pobierz plik .ics i zaimportuj go w Kalendarzu Google (Ustawienia → Importuj i eksportuj).
             Wydarzenia obejmują cały {CURRENT_YEAR} r., od stycznia do grudnia — dokładnie tak jak
-            tabela powyżej. Każdy kubełek dostaje osobne wydarzenie, jedno po drugim co{' '}
+            tabela w „Miesiąc po miesiącu". Każdy kubełek dostaje osobne wydarzenie, jedno po drugim
+            co{' '}
             {EVENT_INTERVAL_MINUTES} minut.
           </Typography>
         </Box>

@@ -1,0 +1,246 @@
+/*
+ * Arkusz do druku / zapisu PDF listy wpłat.
+ *
+ * Na ekranie jest ukryty — pojawia się dopiero przy drukowaniu, wtedy znika
+ * cała aplikacja. Kolory są jasne, bo ciemny motyw na papierze zjada tusz.
+ */
+
+.print-sheet {
+  display: none;
+}
+
+@media print {
+  html {
+    color-scheme: light;
+  }
+
+  /* Aplikacja znika, zostaje sam arkusz. */
+  #root {
+    display: none !important;
+  }
+
+  .print-sheet {
+    display: block;
+    /* Własny margines boczny — działa też wtedy, gdy w oknie drukowania
+       wybrano marginesy „brak"/„minimalne" i @page nie ma nic do powiedzenia. */
+    padding: 0 8mm;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+}
+
+.print-sheet {
+  background: #fff;
+  color: #101820;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 9.5pt;
+  line-height: 1.35;
+}
+
+.ps-head {
+  border-bottom: 1.5pt solid #101820;
+  padding-bottom: 3mm;
+  margin-bottom: 5mm;
+}
+
+.ps-title {
+  font-size: 17pt;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.ps-subtitle {
+  margin: 1.5mm 0 0;
+  font-size: 10pt;
+  color: #3d4b5a;
+}
+
+.ps-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2mm 6mm;
+  margin-top: 2.5mm;
+  font-size: 8.5pt;
+  color: #3d4b5a;
+}
+
+.ps-facts strong {
+  color: #101820;
+}
+
+.ps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5mm 7mm;
+}
+
+.ps-month {
+  /* Blok miesiąca nigdy nie może się rozjechać między strony. */
+  break-inside: avoid;
+  page-break-inside: avoid;
+  border: 0.8pt solid #c3ccd6;
+  border-radius: 2mm;
+  padding: 3mm 3.5mm;
+}
+
+.ps-month__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 3mm;
+  border-bottom: 0.8pt solid #e1e7ed;
+  padding-bottom: 1.5mm;
+  margin-bottom: 2mm;
+}
+
+.ps-month__name {
+  font-size: 11pt;
+  font-weight: 700;
+}
+
+.ps-month__date {
+  font-size: 8.5pt;
+  color: #3d4b5a;
+  text-align: right;
+}
+
+.ps-month__weekday {
+  display: block;
+  font-size: 7.5pt;
+  color: #66788a;
+}
+
+.ps-month__weekday--weekend {
+  font-weight: 700;
+  color: #101820;
+}
+
+.ps-row {
+  display: grid;
+  grid-template-columns: 4mm 1fr auto;
+  align-items: center;
+  gap: 2mm;
+  padding: 0.8mm 0;
+}
+
+.ps-row + .ps-row {
+  border-top: 0.4pt solid #eef2f5;
+}
+
+.ps-box {
+  width: 3.4mm;
+  height: 3.4mm;
+  border: 0.8pt solid #101820;
+  border-radius: 0.6mm;
+}
+
+.ps-row__label {
+  display: flex;
+  align-items: center;
+  gap: 1.6mm;
+  min-width: 0;
+}
+
+.ps-dot {
+  width: 1.8mm;
+  height: 1.8mm;
+  border-radius: 50%;
+  flex-shrink: 0;
+  /* Domyślnie czarno-biało; tryb kolorowy nadpisuje to stylem inline. */
+  background: #101820;
+  /* Kropki koloru mają się drukować także przy wyłączonych tłach. */
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.ps-row__amount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ps-row__share {
+  color: #66788a;
+  font-size: 7.5pt;
+  margin-left: 1.5mm;
+}
+
+.ps-month__total {
+  display: flex;
+  justify-content: space-between;
+  gap: 3mm;
+  border-top: 0.8pt solid #101820;
+  margin-top: 1.5mm;
+  padding-top: 1.5mm;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ps-month__note {
+  margin-top: 1.2mm;
+  font-size: 7.5pt;
+  color: #8a5a00;
+}
+
+.ps-summary {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-top: 7mm;
+  padding-top: 4mm;
+  border-top: 1.5pt solid #101820;
+}
+
+.ps-summary__title {
+  font-size: 12pt;
+  font-weight: 700;
+  margin: 0 0 2.5mm;
+}
+
+.ps-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ps-table th,
+.ps-table td {
+  text-align: left;
+  padding: 1.2mm 2mm 1.2mm 0;
+  border-bottom: 0.4pt solid #e1e7ed;
+}
+
+.ps-table th {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #66788a;
+  border-bottom: 0.8pt solid #c3ccd6;
+}
+
+.ps-table td:last-child,
+.ps-table th:last-child,
+.ps-table td:nth-last-child(2),
+.ps-table th:nth-last-child(2) {
+  text-align: right;
+  padding-right: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.ps-table tfoot td {
+  font-weight: 700;
+  border-bottom: none;
+  border-top: 0.8pt solid #101820;
+}
+
+.ps-foot {
+  margin-top: 6mm;
+  padding-top: 2mm;
+  border-top: 0.4pt solid #c3ccd6;
+  font-size: 7.5pt;
+  color: #66788a;
+  display: flex;
+  justify-content: space-between;
+  gap: 4mm;
+}

@@ -55,6 +55,9 @@ export function ikeLimit(year = CURRENT_YEAR): number {
 
 export const MONTHS_IN_YEAR = 12;
 
+/** Domyślny dzień miesiąca proponowany przy eksporcie do kalendarza i wydruku. */
+export const DEFAULT_PAYMENT_DAY = 5;
+
 export const MONTH_NAMES = [
   'Styczeń',
   'Luty',
